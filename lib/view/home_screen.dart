@@ -1,6 +1,7 @@
 
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/user.dart';
 import 'package:flutter_application_1/view/detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -12,8 +13,14 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  bool isRead = false;
-
+  List <User> userList = List.generate(50, (index) => 
+  User(
+    name: "name $index", 
+    surname: 'surname', 
+    userColor: Color.fromRGBO(151, 63, 233, 0.945), 
+    isRead: false)
+    
+    );
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
@@ -24,14 +31,14 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor:Colors.deepPurple,
       ),
       body:ListView.builder(
-        itemCount: 60,
+        itemCount: userList.length,
         itemBuilder: (context , index) => _buildUserCard(context,index) ,
        ),
 
   );
   }
 
-Widget _buildUserCard(context, int number){
+Widget _buildUserCard(context, int index){
   return Card(child: ListTile(
         leading:const Icon(
           Icons.person,
@@ -39,33 +46,33 @@ Widget _buildUserCard(context, int number){
           size: 40,
         ),
         title:  Text(
-          "Name ${(number + 1)}",
+          userList[index].name,
           style: const TextStyle(fontSize: 22)      ),
-          subtitle: const Text(
-            "Surname"
+          subtitle:  Text(
+            userList[index].surname,
           ),
           trailing: IconButton( icon: const Icon(
             Icons.arrow_right,
             size: 40
           ),
           onPressed: () {
-            navigateToDetail(context, number);
+            navigateToDetail(context, index);
             setState(() {
-              isRead = true;
+              userList[index].isRead = true ;
             });
-
           },
           ),
-          tileColor : isRead ? Color.fromRGBO(223, 195, 231, 1) : Color.fromRGBO(189, 123, 209, 1)
-      ),
-    );
+          tileColor : userList[index].isRead ? Color.fromRGBO(100, 60, 173, 1) : Color.fromRGBO(151, 63, 233, 0.945)
+          ) 
+      );
+    
 }
 
 Future<void> navigateToDetail(BuildContext context,int index) async{
   bool isTrue = await Navigator.of(context).push(MaterialPageRoute(
               builder:(context){
                 return DetailScreen(
-                  appBarTitle:"Name ${(index + 1)}");
+                  user:userList[index]);
               },
               ),
             );

@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/model/user.dart';
 
 class DetailScreen extends StatelessWidget {
-  final String appBarTitle;
+  final User user;
 
   const DetailScreen({
     Key? key,
-    required this.appBarTitle,
+    required this.user,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: user.userColor,
       appBar: AppBar(
         title: Text(
-          appBarTitle,
+          user.name,
         ),
-      //  automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false,
       ),
       body: Center(
         child:ElevatedButton (
